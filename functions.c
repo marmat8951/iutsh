@@ -13,6 +13,8 @@ void affiche_prompt(){
 }
 
 void execute_ligne_commande(){
-
-
+  int fl = 0;
+  int nb = 0;
+  char *** lc = ligne_commande(&fl,&nb);
+  lc = lc;
 }
