@@ -1,6 +1,9 @@
 #hidden files
 .*
 
+#emacs files
+*.*~
+
 # Prerequisites
 *.d
 
@@ -38,6 +41,8 @@
 *.i*86
 *.x86_64
 *.hex
+iutsh
+
 
 # Debug files
 *.dSYM/
