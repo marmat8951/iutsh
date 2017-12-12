@@ -37,23 +37,45 @@ void execute_ligne_commande(){
   int nb = 0;
   char *** lc = ligne_commande(&fl,&nb);
   int actualcommand = 0;
-  lc=lc;
+ 
   for(;actualcommand<nb;actualcommand++){
+    int pipetable[2];
+    if(pipe(pipetable)<0){
+      fprintf(stderr,"Erreur lors de la création du pipe");
+    }
     int process=fork();
     if(process==0){ // dans le fils
-      
+      if(actualcommand==nb-1){
+	close(pipetable[1]);
+      }else{
+	close(1);
+	dup(pipetable[1]);
+      }
+      if(actualcommand==0){
+	close(pipetable[0]);
+      }else{
+	close(0);
+	dup(pipetable[0]);
+      }
       if(execvp(lc[actualcommand][0],lc[actualcommand])==-1){
+	
 	perror(lc[actualcommand][0]);
 	exit(-1);
       }
       
     }else{         // dans le pere
+      close(pipetable[0]);
+      close(pipetable[1]);
       if(fl == 0){
 	int status=0;
 	waitpid(process,&status,0);
       }
+      
     }
+  
+   
   }
+
   if(lc!=NULL){
   libere(lc);
   }
