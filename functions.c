@@ -37,28 +37,34 @@ void execute_ligne_commande(){
   int nb = 0;
   char *** lc = ligne_commande(&fl,&nb);
   int actualcommand = 0;
- 
+  int old = 0;
+  old=old;
+  int in = dup(0);
+  int out= dup(1);
   for(;actualcommand<nb;actualcommand++){
     int pipetable[2];
     if(pipe(pipetable)<0){
       fprintf(stderr,"Erreur lors de la création du pipe");
     }
     int process=fork();
-    if(process==0){ // dans le fils
-      if(actualcommand==nb-1){
+    if(process==0){        // dans le fils
+      if(actualcommand==nb-1){ // Si on est sur la dernière commande
 	close(pipetable[1]);
-      }else{
+	
+      }else{                   // Sinon
 	close(1);
 	dup(pipetable[1]);
       }
-      if(actualcommand==0){
+
+      
+      if(actualcommand==0){    // Si on est sur la premiere commande
 	close(pipetable[0]);
-      }else{
+      }else{                   // Sinon
 	close(0);
 	dup(pipetable[0]);
       }
-      if(execvp(lc[actualcommand][0],lc[actualcommand])==-1){
-	
+      
+      if(execvp(lc[actualcommand][0],lc[actualcommand])==-1){	// Execute et verifie si la commande a réussi
 	perror(lc[actualcommand][0]);
 	exit(-1);
       }
