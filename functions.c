@@ -7,10 +7,29 @@ void affiche_prompt(){
     printf(" EFAULT buf is not valid.");
     exit(i);
   }
-  //printf("%s :",name.sysname);
-  printf("iutsh$");
+  int len=40;
+  int path_len=1000;
+  char *cpuname=(char *)malloc(sizeof(char)*len);
+  char *username = getenv("USER");
+  if(username == NULL){
+    fprintf(stderr,"Erreur: Impossible de récuperer l'utilisateur");
+    exit(-1);
+  }
+  char *path=(char *)malloc(sizeof(char)*path_len);
+  if(getcwd(path,path_len)==NULL){
+    perror("path");
+    exit(1);
+  } 
+  if(gethostname(cpuname, len)<0){
+    perror("hostname");
+    exit(1);
+  }
+  printf("%s@%s:%s$ ",username,cpuname,path);
+  //printf("iutsh$");
   fflush(stdout);
   execute_ligne_commande();
+  free(cpuname);
+  free(path);
 }
 
 void execute_ligne_commande(){
