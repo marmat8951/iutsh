@@ -7,9 +7,10 @@ void affiche_prompt(){
     printf(" EFAULT buf is not valid.");
     exit(i);
   }
-  printf("%s :",name.sysname);
-  
-  
+  //printf("%s :",name.sysname);
+  printf("iutsh$");
+  fflush(stdout);
+  execute_ligne_commande();
 }
 
 void execute_ligne_commande(){
@@ -21,6 +22,10 @@ void execute_ligne_commande(){
   for(;actualcommand<nb;actualcommand++){
     if(fork()==0){
       execvp(lc[actualcommand][0],lc[actualcommand]);
+    }else{
+      if(fl == 0){
+	wait(NULL);
+      }
     }
   }
 }

@@ -4,6 +4,6 @@
 int main(int argc, char **argv){
   argc = argc;
   argv = argv;
-  execute_ligne_commande();
+  affiche_prompt();
   return 0;
 }
