@@ -40,11 +40,15 @@ void execute_ligne_commande(){
   lc=lc;
   for(;actualcommand<nb;actualcommand++){
     if(fork()==0){
-      execvp(lc[actualcommand][0],lc[actualcommand]);
+      if(execvp(lc[actualcommand][0],lc[actualcommand])==-1){
+	perror(lc[actualcommand][0]);
+	exit(-1);
+      }
     }else{
       if(fl == 0){
 	wait(NULL);
       }
     }
   }
+  libere(lc);
 }
