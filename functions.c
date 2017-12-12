@@ -50,5 +50,5 @@ void execute_ligne_commande(){
       }
     }
   }
-  libere(lc);
+  
 }
