@@ -39,16 +39,22 @@ void execute_ligne_commande(){
   int actualcommand = 0;
   lc=lc;
   for(;actualcommand<nb;actualcommand++){
-    if(fork()==0){
+    int process=fork();
+    if(process==0){ // dans le fils
+      
       if(execvp(lc[actualcommand][0],lc[actualcommand])==-1){
 	perror(lc[actualcommand][0]);
 	exit(-1);
       }
-    }else{
+      
+    }else{         // dans le pere
       if(fl == 0){
-	wait(NULL);
+	int status=0;
+	waitpid(process,&status,0);
       }
     }
   }
-  
+  if(lc!=NULL){
+  libere(lc);
+  }
 }
