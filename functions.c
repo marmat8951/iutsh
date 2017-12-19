@@ -41,6 +41,8 @@ void execute_ligne_commande(){
   old=old;
   int in = dup(0);
   int out= dup(1);
+  in=in;
+  out=out;
   for(;actualcommand<nb;actualcommand++){
     int pipetable[2];
     if(pipe(pipetable)<0){
